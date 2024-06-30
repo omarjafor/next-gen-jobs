@@ -4,10 +4,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 const Loading = () => {
     return (
         <div className="flex flex-col space-y-3">
-            <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+            <Skeleton className="h-60 w-full rounded-xl bg-zinc-500 mt-5" />
             <div className="space-y-2">
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[200px]" />
+                <Skeleton className="h-40 w-full bg-zinc-500 mt-5" />
+                <Skeleton className="h-40 w-full bg-zinc-500 mt-5" />
             </div>
         </div>
     );
