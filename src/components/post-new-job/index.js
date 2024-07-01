@@ -5,8 +5,11 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { initialJobFormData, jobFormControls } from "@/utils";
 import CommonForm from "../common-form";
+import { postNewJobAction } from "@/actions";
+import { useToast } from "../ui/use-toast";
 
 const PostNewJob = ({ user, profile }) => {
+    const { toast } = useToast()
     const [showDialog, setShowDialog] = useState(false);
     const [jobFormData, setJobFormData] = useState({
         ...initialJobFormData, companyName: profile?.recruiterInfo?.companyName
@@ -20,8 +23,17 @@ const PostNewJob = ({ user, profile }) => {
         return Object.keys(jobFormData).every(key => jobFormData[key].trim() !== '')
     }
 
-    function createNewJob(){
-        
+    async function createNewJob(){
+        await postNewJobAction({
+            ...jobFormData,
+            recruiterId: user?.id,
+            applicants: []
+        }, '/jobs');
+        setJobFormData({
+            ...initialJobFormData, companyName: profile?.recruiterInfo?.companyName
+        });
+        setShowDialog(false);
+        toast({ title: "Job Create Successfull" })
     }
     return (
         <div>

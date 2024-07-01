@@ -1,28 +1,43 @@
 'use client'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommonForm from "../common-form";
 import { candidateOnboardFormControls, initialCandidateFormData, initialRecruiterFormData, recruiterOnboardFormControls } from "@/utils";
 import { useUser } from "@clerk/nextjs";
 import { createProfileAction } from "@/actions";
 import { useToast } from "../ui/use-toast";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseClient = createClient('https://ldqlmidmuhvnmivwqgew.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcWxtaWRtdWh2bm1pdndxZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTcxMTEsImV4cCI6MjAzNTQzMzExMX0.7kS6R_nHBVPNKYXJxXs0dgmvmBeP8klW25Z220cMM2A');
 
 const OnBoard = () => {
-    const {user} = useUser();
+    const { user } = useUser();
     const { toast } = useToast()
     const [currentTab, setCurrentTab] = useState('candidate');
     const [recruiterFormData, setRecruiterFromData] = useState(initialRecruiterFormData);
     const [candidateFormData, setCandidateFromData] = useState(initialCandidateFormData);
-    function handleTabChange(value){
+    const [file, setFile] = useState(null);
+
+    function handleTabChange(value) {
         setCurrentTab(value);
     }
 
-    function handleButtonValid() {
+    function candidateButtonValid() {
+        return Object.keys(candidateFormData).every(key => candidateFormData[key].trim() !== '')
+    }
+
+    function recruiterButtonValid() {
         return Object.keys(recruiterFormData).every(key => recruiterFormData[key].trim() !== '')
     }
 
-    async function createProfile(){
-        const data = {
+    async function createProfile() {
+        const data = currentTab === 'candidate' ? {
+            candidateInfo: candidateFormData,
+            role: 'candidate',
+            isPremiumUser: false,
+            userId: user?.id,
+            email: user?.primaryEmailAddress?.emailAddress
+        } : {
             recruiterInfo: recruiterFormData,
             role: 'recruiter',
             isPremiumUser: false,
@@ -30,8 +45,31 @@ const OnBoard = () => {
             email: user?.primaryEmailAddress?.emailAddress
         };
         await createProfileAction(data, '/onboard')
-        toast({title: "Your onboarding completed"})
+        toast({ title: "Your onboarding completed" })
     }
+
+    function handleFileChange(e) {
+        e.preventDefault();
+        setFile(e.target.files[0]);
+    }
+
+    async function handleUploadToSupabase(){
+        const {data, error} = await supabaseClient.storage.from('NextGen Jobs').upload(`/public/${file.name}`, file, {
+            cacheControl: '3600',
+            upsert: false,
+        });
+        console.log(data, error);
+        if(data){
+            setCandidateFromData({
+                ...candidateFormData,
+                resume: data.path
+            })
+        }
+    }
+
+    useEffect(() => {
+        if(file) handleUploadToSupabase()
+    } , [file])
 
     return (
         <div>
@@ -47,20 +85,23 @@ const OnBoard = () => {
                 </div>
                 <TabsContent value='candidate'>
                     <CommonForm
-                    formControls={candidateOnboardFormControls}
-                    buttonText={'Onboard as Candidate'}
-                    formData={candidateFormData}
-                    setFormData={setCandidateFromData}
+                        action={createProfile}
+                        formControls={candidateOnboardFormControls}
+                        buttonText={'Onboard as Candidate'}
+                        formData={candidateFormData}
+                        setFormData={setCandidateFromData}
+                        handleFileChange={handleFileChange}
+                        isBtnDisabled={!candidateButtonValid()}
                     />
                 </TabsContent>
                 <TabsContent value='recruiter'>
                     <CommonForm
-                    formControls={recruiterOnboardFormControls}
-                    buttonText={'Onboard as Recruiter'}
-                    formData={recruiterFormData}
-                    setFormData={setRecruiterFromData}
-                    isBtnDisabled={!handleButtonValid()}
-                    action={createProfile}
+                        formControls={recruiterOnboardFormControls}
+                        buttonText={'Onboard as Recruiter'}
+                        formData={recruiterFormData}
+                        setFormData={setRecruiterFromData}
+                        isBtnDisabled={!recruiterButtonValid()}
+                        action={createProfile}
                     />
                 </TabsContent>
             </Tabs>
