@@ -1,10 +1,13 @@
+import { fetchProfileAction } from '@/actions';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 async function Home() {
-  const profile = null;
+  
   const user = await currentUser();
-  console.log(user);
+  const profile = await fetchProfileAction(user?.id);
+
+  
   if (!user) return <div>Not signed in</div>;
   if(user && !profile?._id) redirect('/onboard')
 

@@ -29,11 +29,12 @@ const CommonForm = ({action, formControls, buttonText, isBtnDisabled, btnType, f
                         for={getControl.name}
                         className='flex bg-gray-100 dark:bg-black items-center px-3 py-3 mx-auto mt-6 text-center border-2 border-dashed rounded-lg cursor-pointer'
                     >
-                        <h2>{getControl.label}</h2>
+                        <h2 className="mr-4">{getControl.label} : </h2>
                         <Input
                             onChange={handleFileChange}
                             id={getControl.name}
                             type='file'
+                            className='w-1/2'
                         />
                     </Label>
                 )
@@ -58,7 +59,7 @@ const CommonForm = ({action, formControls, buttonText, isBtnDisabled, btnType, f
         return content;
     }
     return (
-        <form action={action}>
+        <form action={action} className="w-3/4 mx-auto">
             {formControls.map((control) => renderInputByComponentType(control))}
             <div className="mt-6 w-full">
                 <Button
