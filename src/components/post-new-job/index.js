@@ -20,7 +20,7 @@ const PostNewJob = ({ user, profile }) => {
     }
 
     function handleButtonValid() {
-        return Object.keys(jobFormData).every(key => jobFormData[key].trim() !== '')
+        return Object.keys(jobFormData).every(key => jobFormData[key]?.trim() !== '')
     }
 
     async function createNewJob(){

@@ -4,7 +4,8 @@ import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
 import { Button } from "../ui/button";
 
-const RecruiterJobCard = ({ jobItem }) => {
+const RecruiterJobCard = ({ jobItem, profile, jobApplication }) => {
+    console.log(jobItem);
     return (
         <div>
             <CommonCard
@@ -15,7 +16,9 @@ const RecruiterJobCard = ({ jobItem }) => {
                 <Button
                     className=" dark:bg-[#fffa27] disabled:opacity-55 flex h-11 items-center justify-center px-5"
                 >
-                    10 Applicants
+                    {
+                        jobApplication.filter(job => job.jobId === jobItem?._id).length
+                    } Applicants
                 </Button>}
             />
         </div>
