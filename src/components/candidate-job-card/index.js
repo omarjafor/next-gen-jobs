@@ -4,13 +4,10 @@ import JobIcon from "../job-icon";
 import { Button } from "../ui/button";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer";
 import { createJobApplicationAction } from "@/actions";
 

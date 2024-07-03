@@ -53,3 +53,9 @@ export async function fetchJobApplicationForRecruiterAction(id) {
     const result = await Application.find({ recruiterUserId: id });
     return JSON.parse(JSON.stringify(result));
 }
+
+export async function getCandidateDetailsAction(id){
+    await connectDB();
+    const result = await Profile.findOne({userId: id});
+    return JSON.parse(JSON.stringify(result));
+}
