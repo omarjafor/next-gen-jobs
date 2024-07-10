@@ -59,3 +59,12 @@ export async function getCandidateDetailsAction(id){
     const result = await Profile.findOne({userId: id});
     return JSON.parse(JSON.stringify(result));
 }
+
+export async function updateJobApplicantAction(data, pathToRevalidate){
+    await connectDB();
+    const { status, _id } = data;
+    await Application.findOneAndUpdate({
+        _id : _id
+    }, { status }, {new: true})
+    revalidatePath(pathToRevalidate);
+}

@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { Button } from "../ui/button";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent } from "../ui/dialog";
-import { getCandidateDetailsAction } from "@/actions";
+import { getCandidateDetailsAction, updateJobApplicantAction } from "@/actions";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseClient = createClient('https://ldqlmidmuhvnmivwqgew.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcWxtaWRtdWh2bm1pdndxZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTcxMTEsImV4cCI6MjAzNTQzMzExMX0.7kS6R_nHBVPNKYXJxXs0dgmvmBeP8klW25Z220cMM2A');
@@ -20,7 +20,6 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
     }
     function handlePreviewResume(){
         const {data} = supabaseClient.storage.from('NextGen Jobs').getPublicUrl(candidateDetails?.candidateInfo?.resume);
-
         const a = document.createElement('a');
         a.href = data?.publicUrl;
         a.setAttribute('download', `${candidateDetails?.candidateInfo?.name}.pdf`);
@@ -28,6 +27,12 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+    async function handleUpdateJobStatus(status){
+        const applicant = jobApplication?.find(item => item.candidateUserId === candidateDetails?.userId)
+        const updateData = {...applicant, status: applicant.status.concat(status)}
+        await updateJobApplicantAction(updateData, '/jobs');
+        setShowDetailsModal(false);
     }
     return (
         <Fragment>
@@ -113,19 +118,19 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
                             Resume
                         </Button>
                         <Button
-                            
+                            onClick={() => handleUpdateJobStatus('selected')}
                             className=" disabled:opacity-65 flex h-11 items-center justify-center px-5"
                             disabled={
                                 jobApplication
                                     .find(
                                         (item) =>
-                                            item.candidateUserID === candidateDetails?.userId
+                                            item.candidateUserId === candidateDetails?.userId
                                     )
                                     ?.status.includes("selected") ||
                                     jobApplication
                                         .find(
                                             (item) =>
-                                                item.candidateUserID === candidateDetails?.userId
+                                                item.candidateUserId === candidateDetails?.userId
                                         )
                                         ?.status.includes("rejected")
                                     ? true
@@ -135,26 +140,26 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
                             {jobApplication
                                 .find(
                                     (item) =>
-                                        item.candidateUserID === candidateDetails?.userId
+                                        item.candidateUserId === candidateDetails?.userId
                                 )
                                 ?.status.includes("selected")
                                 ? "Selected"
                                 : "Select"}
                         </Button>
                         <Button
-                            
+                            onClick={() => handleUpdateJobStatus('rejected')}
                             className=" disabled:opacity-65 flex h-11 items-center justify-center px-5"
                             disabled={
                                 jobApplication
                                     .find(
                                         (item) =>
-                                            item.candidateUserID === candidateDetails?.userId
+                                            item.candidateUserId === candidateDetails?.userId
                                     )
                                     ?.status.includes("selected") ||
                                     jobApplication
                                         .find(
                                             (item) =>
-                                                item.candidateUserID === candidateDetails?.userId
+                                                item.candidateUserId === candidateDetails?.userId
                                         )
                                         ?.status.includes("rejected")
                                     ? true
@@ -164,7 +169,7 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
                             {jobApplication
                                 .find(
                                     (item) =>
-                                        item.candidateUserID === candidateDetails?.userId
+                                        item.candidateUserId === candidateDetails?.userId
                                 )
                                 ?.status.includes("rejected")
                                 ? "Rejected"
