@@ -68,3 +68,9 @@ export async function updateJobApplicantAction(data, pathToRevalidate){
     }, { status }, {new: true})
     revalidatePath(pathToRevalidate);
 }
+
+export async function filterCategoryAction() {
+    await connectDB();
+    const result = await Job.find({});
+    return JSON.parse(JSON.stringify(result));
+}
