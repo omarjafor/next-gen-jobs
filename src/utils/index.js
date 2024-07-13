@@ -190,3 +190,22 @@ export const initialJobFormData = {
     description: "",
     skills: "",
 };
+
+export const filterMenuData = [
+    {
+        id: 'companyName',
+        label: 'Company Name'
+    },
+    {
+        id: 'title',
+        label: 'Title'
+    },
+    {
+        id: 'type',
+        label: 'Type'
+    },
+    {
+        id: 'location',
+        label: 'Location'
+    },
+]
