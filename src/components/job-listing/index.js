@@ -31,14 +31,18 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
         sessionStorage.setItem('filterParams', JSON.stringify(params))
     }
 
-    useEffect( () => {
+    useEffect(() => {
         setFilterParams(JSON.parse(sessionStorage.getItem('filterParams')))
+    }, [])
+
+    useEffect( () => {
         if(filterParams && Object.keys(filterParams).length > 0){
             let url = '';
             url = formUrlQuery({
                 params: searchParams.toString(),
                 dataToAdd: filterParams
             });
+            console.log(url);
             router.push(url, { scroll: false});
         }
     } , [filterParams, searchParams])

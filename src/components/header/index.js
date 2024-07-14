@@ -74,7 +74,8 @@ const Header = ({ user, profile }) => {
                 <nav className="ml-auto hidden lg:flex gap-6">
                     {
                         menuItem.map(item => item.show ?
-                            <Link href={item.path} className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-3 text-sm font-medium">{item.label}</Link>
+                            <Link href={item.path} onClick={() => sessionStorage.removeItem("filterParams")}
+                            className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-3 text-sm font-medium">{item.label}</Link>
                             : null)
                     }
                     <UserButton afterSignOutUrl="/" />

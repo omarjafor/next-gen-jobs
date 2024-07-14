@@ -3,10 +3,10 @@ import JobListing from "@/components/job-listing";
 import { currentUser } from "@clerk/nextjs/server";
 
 
-const Jobs = async () => {
+const Jobs = async ({searchParams}) => {
     const user = await currentUser();
     const profile = await fetchProfileAction(user?.id);
-    const jobList = profile?.role === 'candidate' ? await fetchAllJobsAction() : await fetchJobsForRecruiterAction(user?.id);
+    const jobList = profile?.role === 'candidate' ? await fetchAllJobsAction(searchParams) : await fetchJobsForRecruiterAction(user?.id);
     const jobApplicationList = profile?.role === 'candidate' ? await fetchJobApplicationForCandidateAction(user?.id) : await fetchJobApplicationForRecruiterAction(user?.id);
     const filterCategories = await filterCategoryAction();
     return <JobListing
