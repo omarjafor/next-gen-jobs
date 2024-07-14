@@ -1,11 +1,47 @@
 'use client'
 
-import { filterMenuData } from "@/utils";
+import { filterMenuData, formUrlQuery } from "@/utils";
 import CandidateJobCard from "../candidate-job-card";
 import PostNewJob from "../post-new-job";
 import RecruiterJobCard from "../recruiter-job-card";
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "../ui/menubar";
+import { Label } from "../ui/label";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }) => {
+
+    const [filterParams, setFilterParams] = useState({})
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    function handleFilter(id, option){
+        let params = { ...filterParams };
+        const indexOfCurrentSection = Object.keys(params).indexOf(id);
+        if(indexOfCurrentSection === -1){
+            params = {
+                ...params, [id]:[option]
+            }
+        }else {
+            const indexOfCurrentOption = params[id].indexOf(option);
+            if(indexOfCurrentOption === -1) params[id].push(option);
+            else params[id].splice(indexOfCurrentOption, 1)
+        }
+        setFilterParams(params);
+        sessionStorage.setItem('filterParams', JSON.stringify(params))
+    }
+
+    useEffect( () => {
+        setFilterParams(JSON.parse(sessionStorage.getItem('filterParams')))
+        if(filterParams && Object.keys(filterParams).length > 0){
+            let url = '';
+            url = formUrlQuery({
+                params: searchParams.toString(),
+                dataToAdd: filterParams
+            });
+            router.push(url, { scroll: false});
+        }
+    } , [filterParams, searchParams])
 
     const filterMenus = filterMenuData.map((item) => ({
         id: item.id,
@@ -14,7 +50,6 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
             ...new Set(filterCategories.map(listItem => listItem[item.id]))
         ]
     }));
-    console.log(filterMenus);
     
     return (
         <div>
@@ -27,7 +62,29 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
                     </h1>
                     <div className="flex items-center">
                         {
-                            profile?.role === 'candidate' ? <p>Filter</p> : <PostNewJob user={user} profile={profile} />
+                            profile?.role === 'candidate' ? (
+                                <Menubar>
+                                    {
+                                        filterMenus.map(filterMenu => 
+                                            <MenubarMenu>
+                                                <MenubarTrigger>
+                                                    {filterMenu.name}
+                                                </MenubarTrigger>
+                                                <MenubarContent>
+                                                    {
+                                                        filterMenu.options.map((option, optionIdx) => (
+                                                            <MenubarItem key={optionIdx} className='flex items-center' onClick={() => handleFilter(filterMenu.id, option)}>
+                                                            <div className={`size-4 border rounded border-gray-900 text-indigo-600 ${filterParams && Object.keys(filterParams).length > 0 && filterParams[filterMenu.id] && filterParams[filterMenu.id].indexOf(option) > -1 ? 'bg-black' : ''}`} />
+                                                            <Label className='ml-3 cursor-pointer text-sm text-gray-600'>{option}</Label>
+                                                            </MenubarItem>
+                                                        ))
+                                                    }
+                                                </MenubarContent>
+                                            </MenubarMenu>
+                                        )
+                                    }
+                                </Menubar>
+                            ) : (<PostNewJob user={user} profile={profile} />)
                         }
                     </div>
                 </div>

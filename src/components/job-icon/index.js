@@ -7,7 +7,7 @@ const JobIcon = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="w-12 h-12 mb-4 text-gray-900"
+                className="w-12 h-12 mb-4 text-gray-900"
             >
                 <path
                     fill-rule="evenodd"

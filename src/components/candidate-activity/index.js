@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 const CandidateActivity = ({ jobList, jobApplicationList }) => {
     const uniqueStatus = [...new Set(jobApplicationList.map(jobItem => jobItem.status).flat(1))]
-    console.log(uniqueStatus);
+    
     return (
         <div className="mx-auto max-w-7xl">
             <Tabs defaultValue="Applied" className="w-full">
@@ -14,7 +14,7 @@ const CandidateActivity = ({ jobList, jobApplicationList }) => {
                     <h1 className="text-4xl font-bold tracking-tight text-gray-950">Your Activity</h1>
                     <TabsList>
                         {
-                            uniqueStatus.map(status => <TabsTrigger value={status}>{status}</TabsTrigger>)
+                            uniqueStatus.map((status, index) => <TabsTrigger key={index} value={status}>{status}</TabsTrigger>)
                         }
                     </TabsList>
                 </div>
@@ -22,10 +22,11 @@ const CandidateActivity = ({ jobList, jobApplicationList }) => {
                     <div className="container mx-auto space-y-8">
                         <div className="flex flex-col gap-8">
                             {
-                                uniqueStatus.map((status) => (
-                                    <TabsContent value={status}>
+                                uniqueStatus.map((status, index) => (
+                                    <TabsContent key={index} value={status}>
                                         {
                                             jobList.filter((jobItem) => jobApplicationList.filter(jobApp => jobApp.status.indexOf(status) > -1).findIndex(filterItemByStatus => jobItem._id === filterItemByStatus.jobId) > -1).map(finalJobItem => <CommonCard
+                                            key={index}
                                             icon={<JobIcon/>}
                                             title={finalJobItem?.title}
                                             description={finalJobItem?.description || finalJobItem?.companyName}
