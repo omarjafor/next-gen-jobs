@@ -42,7 +42,6 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
                 params: searchParams.toString(),
                 dataToAdd: filterParams
             });
-            console.log(url);
             router.push(url, { scroll: false});
         }
     } , [filterParams, searchParams])

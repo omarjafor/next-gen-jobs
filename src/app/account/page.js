@@ -1,9 +1,15 @@
+import { fetchProfileAction } from "@/actions";
 import AccountInfo from "@/components/account-info";
+import { currentUser } from "@clerk/nextjs/server";
 
 
-const Account = () => {
+const Account = async() => {
+    const user = await currentUser();
+    const profile = await fetchProfileAction(user?.id);
+    if (!profile?._id) redirect('/onboard')
+
     return (
-        <AccountInfo />
+        <AccountInfo profile={profile} />
     );
 };
 
