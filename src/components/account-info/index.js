@@ -3,8 +3,11 @@
 import { useEffect, useState } from "react";
 import CommonForm from "../common-form";
 import { candidateOnboardFormControls, initialCandidateFormData, initialRecruiterFormData, recruiterOnboardFormControls } from "@/utils";
+import { updateProfileAction } from "@/actions";
+import { useToast } from "../ui/use-toast";
 
 const AccountInfo = ({ profile }) => {
+    const { toast } = useToast()
     const [candidateData, setCandidateData] = useState(initialCandidateFormData)
     const [recruiterData, setRecruiterData] = useState(initialRecruiterFormData)
 
@@ -13,7 +16,8 @@ const AccountInfo = ({ profile }) => {
     } , [profile])
 
     async function handleUpdateAccount(){
-        
+        await updateProfileAction(profile?.role === 'candidate' ? { _id: profile?._id, candidateInfo: { ...candidateData, resume: profile?.candidateInfo?.resume } } : { _id: profile?._id, recruiterInfo: {...recruiterData}}, '/account');
+        toast({ title: "Profile Update Successfully" });
     }
     return (
         <div className="mx-auto max-w-7xl">

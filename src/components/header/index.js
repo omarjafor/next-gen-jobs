@@ -59,7 +59,7 @@ const Header = ({ user, profile }) => {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side='left'>
-                        <Link className="mr-6 hidden lg:flex" href={'#'}><h3>NextGen Jobs</h3></Link>
+                        <Link className="mr-6 hidden lg:flex" href={'#'}><h3 className="font-bold text-3xl">NextGen Jobs</h3></Link>
                         <div className="grid gap-2 py-6">
                             {
                                 menuItem.map(item => item.show ?
@@ -70,7 +70,7 @@ const Header = ({ user, profile }) => {
                         </div>
                     </SheetContent>
                 </Sheet>
-                <Link className="hidden lg:flex mr-6" href={'/'}>NextGen Jobs</Link>
+                <Link className="hidden lg:flex mr-6 font-bold text-3xl" href={'/'}>NextGen Jobs</Link>
                 <nav className="ml-auto hidden lg:flex gap-6">
                     {
                         menuItem.map(item => item.show ?
