@@ -1,10 +1,9 @@
+import MembershipPage from "@/components/membership";
 
 
 const MemberShip = () => {
     return (
-        <div>
-            Welcome to Membership Page
-        </div>
+        <MembershipPage />
     );
 };
 
