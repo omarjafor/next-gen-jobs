@@ -1,8 +1,14 @@
-import React from 'react';
+'use client'
 
 const MembershipPage = () => {
+
     return (
-        <div>
+        <div className="mx-auto max-w-7xl">
+            <div>
+                <h1>
+                    Choose Your Best Plan
+                </h1>
+            </div>
             
         </div>
     );
