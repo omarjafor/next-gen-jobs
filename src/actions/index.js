@@ -6,6 +6,8 @@ import Job from "@/models/job";
 import Profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
 
+const stripe = require('stripe')(process.env.Stripe_Sk)
+
 export async function createProfileAction(formData, pathToRevalidate) {
     await connectDB();
     await Profile.create(formData);
@@ -84,4 +86,38 @@ export async function updateProfileAction(data, pathToRevalidate) {
     const { recruiterInfo, candidateInfo, _id } = data;
     await Profile.findOneAndUpdate({ _id: _id }, { recruiterInfo, candidateInfo }, { new: true });
     revalidatePath(pathToRevalidate);
+}
+
+// create stripe price id based on tier Selection
+export async function createPriceIdAction(data){
+    const session = await stripe.prices.create({
+        currency: 'BDT',
+        unit_amount: data?.amount * 100,
+        recurring: {
+            interval : 'year'
+        },
+        product_data: {
+            name: 'Premium Plan'
+        }
+    });
+
+    return {
+        success: true,
+        id: session?.id
+    }
+}
+
+// create payment logic stripe
+export async function createStripePaymentAction(data){
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: data?.lineItems,
+        mode: 'subscription',
+        success_url: 'http://localhost:3000/membership'+'?status=success',
+        cancel_url: 'http://localhost:3000/membership'+'?status=cancel'
+    });
+    return{
+        success: true,
+        id: session?.id
+    }
 }

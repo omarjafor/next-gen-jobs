@@ -226,3 +226,21 @@ export function formUrlQuery({params, dataToAdd}){
         query: currentUrl,
     }, { skipNull:true })
 }
+
+export const membershipPlans = [
+    {
+        heading: "Tier 1",
+        price: 100,
+        type: "Basic",
+    },
+    {
+        heading: "Tier 2",
+        price: 1000,
+        type: "Professional",
+    },
+    {
+        heading: "Tier 3",
+        price: 5000,
+        type: "Enterprise",
+    },
+];
