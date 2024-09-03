@@ -83,8 +83,8 @@ export async function filterCategoryAction() {
 
 export async function updateProfileAction(data, pathToRevalidate) {
     await connectDB();
-    const { recruiterInfo, candidateInfo, _id } = data;
-    await Profile.findOneAndUpdate({ _id: _id }, { recruiterInfo, candidateInfo }, { new: true });
+    const { isPremiumUser, memberShipType,  memberShipStartDate, memberShipEndDate, recruiterInfo, candidateInfo, _id } = data;
+    await Profile.findOneAndUpdate({ _id: _id }, { isPremiumUser, memberShipType, memberShipStartDate, memberShipEndDate, recruiterInfo, candidateInfo }, { new: true });
     revalidatePath(pathToRevalidate);
 }
 
