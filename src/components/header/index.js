@@ -27,6 +27,11 @@ const Header = ({ user, profile }) => {
             show: !user
         },
         {
+            label: 'Feed',
+            path: '/feed',
+            show: profile
+        },
+        {
             label: 'Activity',
             path: '/activity',
             show: profile?.role === 'candidate'
@@ -39,17 +44,17 @@ const Header = ({ user, profile }) => {
         {
             label: 'Jobs',
             path: '/jobs',
-            show: user
+            show: profile
         }, 
         {
             label: 'Membership',
             path: '/membership',
-            show: user
+            show: profile
         },
         {
             label: 'Account',
             path: '/account',
-            show: user
+            show: profile
         }
     ]
 
