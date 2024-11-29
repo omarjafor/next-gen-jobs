@@ -1,6 +1,6 @@
 import { fetchProfileAction } from '@/actions';
 import Feed from '@/components/feed';
-import { currentUser } from '@clerk/nextjs/dist/types/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -10,7 +10,7 @@ const FeedPage = async () => {
     if (!profile?._id) redirect('/sign-in')
 
     return (
-        <Feed user={user} profile={profile}/>
+        <Feed profile={profile} />
     );
 };
 
