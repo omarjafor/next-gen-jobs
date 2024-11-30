@@ -6,9 +6,7 @@ import { candidateOnboardFormControls, initialCandidateFormData, initialRecruite
 import { useUser } from "@clerk/nextjs";
 import { createProfileAction } from "@/actions";
 import { useToast } from "../ui/use-toast";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseClient = createClient('https://ldqlmidmuhvnmivwqgew.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcWxtaWRtdWh2bm1pdndxZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTcxMTEsImV4cCI6MjAzNTQzMzExMX0.7kS6R_nHBVPNKYXJxXs0dgmvmBeP8klW25Z220cMM2A');
+import { supabaseClient } from "@/utils/supabase";
 
 const OnBoard = () => {
     const { user } = useUser();
@@ -54,7 +52,7 @@ const OnBoard = () => {
     }
 
     async function handleUploadToSupabase(){
-        const {data, error} = await supabaseClient.storage.from('NextGen Jobs').upload(`/public/${file.name}`, file, {
+        const {data, error} = await supabaseClient.storage.from('NextGen-Jobs').upload(`/public/${file.name}`, file, {
             cacheControl: '3600',
             upsert: false,
         });

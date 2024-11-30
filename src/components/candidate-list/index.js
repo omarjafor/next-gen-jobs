@@ -5,9 +5,8 @@ import { Button } from "../ui/button";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent } from "../ui/dialog";
 import { getCandidateDetailsAction, updateJobApplicantAction } from "@/actions";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseClient } from "@/utils/supabase";
 
-const supabaseClient = createClient('https://ldqlmidmuhvnmivwqgew.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcWxtaWRtdWh2bm1pdndxZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTcxMTEsImV4cCI6MjAzNTQzMzExMX0.7kS6R_nHBVPNKYXJxXs0dgmvmBeP8klW25Z220cMM2A');
 
 const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal, setShowDetailsModal, jobApplication }) => {
     async function handleCadidateDetails(id){
@@ -19,7 +18,7 @@ const CandidateList = ({ candidateDetails, setCandidateDetails, showDetailsModal
         }
     }
     function handlePreviewResume(){
-        const {data} = supabaseClient.storage.from('NextGen Jobs').getPublicUrl(candidateDetails?.candidateInfo?.resume);
+        const {data} = supabaseClient.storage.from('NextGen-Jobs').getPublicUrl(candidateDetails?.candidateInfo?.resume);
         const a = document.createElement('a');
         a.href = data?.publicUrl;
         a.setAttribute('download', `${candidateDetails?.candidateInfo?.name}.pdf`);

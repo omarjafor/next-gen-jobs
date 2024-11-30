@@ -1,14 +1,13 @@
 'use client'
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Dialog, DialogContent } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader } from '../ui/dialog';
 import { Textarea } from '../ui/textarea';
 import { Label } from '@radix-ui/react-label';
 import { CirclePlus } from 'lucide-react';
 import { Input } from '../ui/input';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseClient = createClient('https://ldqlmidmuhvnmivwqgew.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkcWxtaWRtdWh2bm1pdndxZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTcxMTEsImV4cCI6MjAzNTQzMzExMX0.7kS6R_nHBVPNKYXJxXs0dgmvmBeP8klW25Z220cMM2A');
+import { supabaseClient } from '@/utils/supabase';
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 
 const Feed = ({ user, profile }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -20,6 +19,22 @@ const Feed = ({ user, profile }) => {
         const file = e.target.files[0];
         setImageData(file);
     }
+    function handleFetchImageUrl(getData) {
+        const { data } = supabaseClient.storage.from('NextGen-Jobs').getPublicUrl(getData.path);
+        console.log(data);
+        if (data)  setFormData({...formData, imageURL: data.publicUrl});
+    }
+    async function handleImageUpload() {
+        const { data, error } = await supabaseClient.storage.from('NextGen-Jobs').upload(`/public/${imageData?.name}`, imageData, {
+            cacheControl: '3600',
+            upsert: false,
+        });
+        console.log(data, error);
+        if (data) handleFetchImageUrl(data);
+    }
+    useEffect(() => {
+        if (imageData) handleImageUpload()
+    }, [imageData])
     function handleSavePost() {
         const { message, imageURL } = formData;
     }
@@ -44,6 +59,9 @@ const Feed = ({ user, profile }) => {
                 setFormData({ message: '', imageURL: '' });
             }}>
                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add NextGen Jobs Feed Post</DialogTitle>
+                    </DialogHeader>
                     <Textarea name="message"
                         value={formData?.message}
                         onChange={(event) =>

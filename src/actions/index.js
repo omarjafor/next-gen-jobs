@@ -2,6 +2,7 @@
 
 import connectDB from "@/database"
 import Application from "@/models/application";
+import Feed from "@/models/feed";
 import Job from "@/models/job";
 import Profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
@@ -121,3 +122,18 @@ export async function createStripePaymentAction(data){
         id: session?.id
     }
 }
+
+// create post action 
+export async function createFeedPostAction(data, pathToRevalidate) {
+    await connectDB();
+    await Feed.create(data);
+    revalidatePath(pathToRevalidate);
+}
+
+// fetch all posts action 
+export async function fetchAllPostsAction() {
+    await connectDB();
+    const posts = await Feed.find({});
+    return JSON.parse(JSON.stringify(posts));
+}
+// update feed post action 

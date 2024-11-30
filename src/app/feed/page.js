@@ -10,7 +10,7 @@ const FeedPage = async () => {
     if (!profile?._id) redirect('/sign-in')
 
     return (
-        <Feed profile={profile} />
+        <Feed user={JSON.parse(JSON.stringify(user))} profile={profile} />
     );
 };
 
