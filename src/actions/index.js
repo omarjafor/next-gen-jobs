@@ -136,4 +136,16 @@ export async function fetchAllPostsAction() {
     const posts = await Feed.find({});
     return JSON.parse(JSON.stringify(posts));
 }
-// update feed post action 
+// update feed post action
+export async function updateFeedPostAction(data, pathToRevalidate) {
+    await connectDB();
+    const { userId, userName, message, image, likes, _id } = data;
+    await Feed.findOneAndUpdate({_id: _id}, {userId, userName, message, image, likes}, {new: true});
+    revalidatePath(pathToRevalidate);
+}
+// delete feed post action
+export async function deleteFeedPostAction(id, pathToRevalidate) {
+    await connectDB();
+    await Feed.findByIdAndDelete({_id: id});
+    revalidatePath(pathToRevalidate);
+}

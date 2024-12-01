@@ -1,4 +1,4 @@
-import { fetchProfileAction } from '@/actions';
+import { fetchAllPostsAction, fetchProfileAction } from '@/actions';
 import Feed from '@/components/feed';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
@@ -9,8 +9,9 @@ const FeedPage = async () => {
     const profile = await fetchProfileAction(user?.id);
     if (!profile?._id) redirect('/sign-in')
 
+    const allFeedPost = await fetchAllPostsAction();
     return (
-        <Feed user={JSON.parse(JSON.stringify(user))} profile={profile} />
+        <Feed user={JSON.parse(JSON.stringify(user))} profile={profile} allFeedPost={allFeedPost} />
     );
 };
 
