@@ -10,11 +10,13 @@ import { supabaseClient } from '@/utils/supabase';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { createFeedPostAction, deleteFeedPostAction, updateFeedPostAction } from '@/actions';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { useToast } from '../ui/use-toast';
 
 const Feed = ({ user, profile, allFeedPost }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [formData, setFormData] = useState({ message: '', imageURL: '' });
     const [imageData, setImageData] = useState(null);
+    const { toast } = useToast()
 
     function handleFileChange(e) {
         e.preventDefault();
@@ -67,6 +69,7 @@ const Feed = ({ user, profile, allFeedPost }) => {
             return;
         }
         await deleteFeedPostAction(post._id, '/feed');
+        toast({ title: "Post Deleted Successfull" })
     }
 
     return (
@@ -109,7 +112,7 @@ const Feed = ({ user, profile, allFeedPost }) => {
                                             <Heart
                                                 size={25}
                                                 fill={
-                                                    feedPostItem?.likes?.length > 0
+                                                    feedPostItem?.likes?.some(like => like.reactorUserId === user?.id)
                                                         ? "#000000"
                                                         : "#ffffff"
                                                 }
