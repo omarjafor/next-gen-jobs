@@ -19,7 +19,8 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body className={inter.className}>
           <Suspense fallback={<Loading />}>
-            <CommonLayout children={children} />
+            <CommonLayout attribute="class"
+              defaultTheme="system" children={children} />
           </Suspense>
           <Toaster />
         </body>

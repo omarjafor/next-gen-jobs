@@ -57,8 +57,8 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
     return (
         <div>
             <div className="mx-auto max-w-7xl">
-                <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                    <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                <div className="flex items-baseline justify-between border-b dark:border-white pb-6 pt-24">
+                    <h1 className="text-4xl font-bold tracking-tight">
                         {
                             profile?.role === 'candidate' ? 'Explore All Jobs' : 'Jobs Dashboard'
                         }
@@ -77,8 +77,8 @@ const JobListing = ({ user, profile, jobList, jobApplication, filterCategories }
                                                     {
                                                         filterMenu.options.map((option, optionIdx) => (
                                                             <MenubarItem key={optionIdx} className='flex items-center' onClick={() => handleFilter(filterMenu.id, option)}>
-                                                            <div className={`size-4 border rounded border-gray-900 text-indigo-600 ${filterParams && Object.keys(filterParams).length > 0 && filterParams[filterMenu.id] && filterParams[filterMenu.id].indexOf(option) > -1 ? 'bg-black' : ''}`} />
-                                                            <Label className='ml-3 cursor-pointer text-sm text-gray-600'>{option}</Label>
+                                                            <div className={`size-4 border rounded border-gray-900 dark:border-white text-indigo-600 ${filterParams && Object.keys(filterParams).length > 0 && filterParams[filterMenu.id] && filterParams[filterMenu.id].indexOf(option) > -1 ? 'bg-black' : ''}`} />
+                                                            <Label className='ml-3 cursor-pointer text-sm'>{option}</Label>
                                                             </MenubarItem>
                                                         ))
                                                     }

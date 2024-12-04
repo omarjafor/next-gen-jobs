@@ -6,10 +6,12 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { UserButton } from "@clerk/nextjs"
-import { AlignJustify } from "lucide-react"
+import { AlignJustify, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
 import Link from "next/link"
 
 const Header = ({ user, profile }) => {
+    const { theme, setTheme } = useTheme();
     const menuItem = [
         {
             label: 'Home',
@@ -76,18 +78,20 @@ const Header = ({ user, profile }) => {
                                     <Link href={item.path} className="flex w-full items-center py-2 text-lg font-semibold">{item.label}</Link>
                                     : null)
                             }
+                            <Moon className="cursor-pointer mb-4" fill={theme === 'dark' ? 'light' : 'dark'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
                             <UserButton afterSignOutUrl="/" />
                         </div>
                     </SheetContent>
                 </Sheet>
                 <Link className="hidden lg:flex mr-6 font-bold text-3xl" href={'/'}>NextGen Jobs</Link>
-                <nav className="ml-auto hidden lg:flex gap-6">
+                <nav className="ml-auto hidden lg:flex gap-6 items-center">
                     {
                         menuItem.map(item => item.show ?
                             <Link href={item.path} onClick={() => sessionStorage.removeItem("filterParams")}
-                            className="group inline-flex h-9 w-max items-center rounded-md bg-white px-4 py-3 text-sm font-medium">{item.label}</Link>
+                            className="group inline-flex h-9 w-max items-center rounded-md px-4 py-3 text-sm font-medium">{item.label}</Link>
                             : null)
                     }
+                    <Moon className="cursor-pointer" fill={theme === 'dark' ? 'light' : 'dark'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
                     <UserButton afterSignOutUrl="/" />
                 </nav>
             </header>

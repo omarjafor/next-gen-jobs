@@ -55,8 +55,8 @@ const MembershipPage = ({ profile }) => {
 
     return (
         <div className="mx-auto max-w-7xl">
-            <div className="flex items-baseline justify-between border-b pb-6 pt-24">
-                <h1 className="text-4xl font-bold tracking-tighter text-gray-950">
+            <div className="flex items-baseline justify-between border-b dark:border-white pb-6 pt-24">
+                <h1 className="text-4xl font-bold tracking-tighter">
                     {
                         profile?.isPremiumUser ? 'You are a premium user' : 'Choose Your Best Plan'
                     }
@@ -82,12 +82,12 @@ const MembershipPage = ({ profile }) => {
                                     title={`$ ${plan.price} /yr`}
                                     icon={<div className="flex justify-between">
                                         <JobIcon />
-                                        <h1 className="font-bold text-2xl">{plan.heading}</h1>
+                                        <h1 className="font-bold text-2xl dark:text-black">{plan.heading}</h1>
                                     </div>}
                                     description={plan.type}
                                     footerContent={<Button
                                         onClick={() => handlePayment(plan)}
-                                        className='disabled:opacity-60 flex h-11 items-center justify-center px-5'>Get Premium</Button>}
+                                        className='disabled:opacity-60 flex h-11 dark:bg-[#fffa27] items-center justify-center px-5'>Get Premium</Button>}
                                 />)
                         }
                     </div>

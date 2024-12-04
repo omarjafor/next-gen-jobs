@@ -19,7 +19,7 @@ const CommonForm = ({action, formControls, buttonText, isBtnDisabled, btnType, f
                     onChange={(e) => setFormData({
                         ...formData, [e.target.name]:e.target.value
                     })}
-                        className='w-full rounded-md h-[60px] px-4 border bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                        className='w-full rounded-md h-[60px] px-4 border bg-gray-100 dark:bg-black text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
                     />
                 </div>);
                 break;
@@ -51,7 +51,7 @@ const CommonForm = ({action, formControls, buttonText, isBtnDisabled, btnType, f
                         onChange={(e) => setFormData({
                             ...formData, [e.target.name]: e.target.value
                         })}
-                        className='w-full rounded-md h-[60px] px-4 border bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                        className='w-full rounded-md h-[60px] px-4 border bg-gray-100 dark:bg-black text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
                     />
                 </div>);
                 break;
@@ -64,7 +64,7 @@ const CommonForm = ({action, formControls, buttonText, isBtnDisabled, btnType, f
             <div className="mt-6 w-full">
                 <Button
                 type={btnType || 'submit'}
-                className='disabled:opacity-60 flex h-11 items-center justify-center px-5'
+                    className='disabled:opacity-60 dark:bg-black dark:text-white flex h-11 items-center justify-center px-5'
                 disabled={isBtnDisabled}
                 >
                     {buttonText}
