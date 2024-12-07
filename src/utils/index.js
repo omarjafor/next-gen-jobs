@@ -196,7 +196,7 @@ export const initialJobFormData = {
 export const filterMenuData = [
     {
         id: 'companyName',
-        label: 'Company Name'
+        label: 'Company'
     },
     {
         id: 'title',

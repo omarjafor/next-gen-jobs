@@ -82,7 +82,7 @@ const CandidateJobCard = ({ jobItem, profile, jobApplication }) => {
                             {jobItem?.type}
                         </h2>
                     </div>
-                    <h3 className="text-2xl font-medium text-black mt-3">
+                    <h3 className="text-2xl font-medium text-black dark:text-white mt-3">
                         Experience: {jobItem?.experience} year
                     </h3>
                     <div className="flex gap-4 mt-6">
@@ -94,7 +94,7 @@ const CandidateJobCard = ({ jobItem, profile, jobApplication }) => {
                             </div>
                         ))}
                     </div>
-                    <div className="my-3 flex justify-center items-center h-[35px] dark:bg-white  bg-blue-400 rounded-[4px]">
+                    <div className="my-3 flex justify-center items-center h-[35px] dark:bg-gray-800  bg-blue-400 rounded-[4px]">
                         <h2 className="text-[16px] font-bold text-black dark:text-white ">
                             {jobItem?.companyName}
                         </h2>

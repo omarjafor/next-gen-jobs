@@ -114,8 +114,8 @@ export async function createStripePaymentAction(data){
         payment_method_types: ["card"],
         line_items: data?.lineItems,
         mode: 'subscription',
-        success_url: 'http://localhost:3000/membership'+'?status=success',
-        cancel_url: 'http://localhost:3000/membership'+'?status=cancel'
+        success_url: `${process.env.URL}/membership`+'?status=success',
+        cancel_url: `${process.env.URL}/membership`+'?status=cancel'
     });
     return{
         success: true,
